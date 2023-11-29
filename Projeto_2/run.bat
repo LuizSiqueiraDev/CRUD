@@ -1,1 +1,1 @@
-uvicorn books2:app --reload
+uvicorn filmes:app --reload
