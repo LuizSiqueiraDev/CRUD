@@ -1,1 +1,1 @@
-uvicorn books:app --reload
+uvicorn tarefas:app --reload
