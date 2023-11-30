@@ -78,18 +78,31 @@ async def novo_filme(filme_request: FilmeRequest):
     FILMES.append(procura_filme_por_id(novo_filme))
 
 
-@app.put("/filmes/atualizar_filme", status_code=status.HTTP_204_NO_CONTENT)
-async def atualizar_filme(filme: FilmeRequest):
+@app.put("/filmes/atualizar/{filme_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def atualizar_filme(filme_id, filme: FilmeRequest):
     "Atualiza um filme já cadastrado."
-    atualizou = False
-
-    for i in enumerate(FILMES):
-        if FILMES[i].id == filme.id:
-            FILMES[i] = filme
+    for filme_atual in FILMES:
+        if filme_atual.id == filme_id:
+            filme_atual.titulo = filme.titulo
+            filme_atual.descricao = filme.descricao
+            filme_atual.genero = filme.genero
+            filme_atual.avaliacao = filme.avaliacao
+            filme_atual.data_lancamento = filme.data_lancamento
             atualizou = True
+            break
     if not atualizou:
         raise http_exception()
 
+
+@app.delete("/filmes/delete/{filme_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def deletar_filme(filme_id: int):
+    "Deleta filme pelo id."
+    for i, _ in enumerate(FILMES):
+        if FILMES[i].id == filme_id:
+            FILMES.pop(i)
+            deletou = True
+    if not deletou:
+        raise http_exception()
 
 
 def procura_filme_por_id(filme: Filme):
