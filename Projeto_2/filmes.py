@@ -12,16 +12,16 @@ class Filme:
     descricao: str
     genero: str
     avaliacao: int
-    data_lancamento: int
+    ano: int
 
 
-    def __init__(self, id, titulo, descricao, genero, avaliacao, data_lancamento):
+    def __init__(self, id, titulo, descricao, genero, avaliacao, ano):
         self.id = id
         self.titulo = titulo
         self.descricao = descricao
         self.genero = genero
         self.avaliacao = avaliacao
-        self.data_lancamento = data_lancamento
+        self.ano = ano
 
 
 class FilmeRequest(BaseModel):
@@ -31,7 +31,7 @@ class FilmeRequest(BaseModel):
     descricao: str = Field(min_length=1, max_length=100)
     genero: str = Field(min_length=1, max_length=50)
     avaliacao: int = Field(gt=-1, lt=11)
-    data_lancamento: int = Field(gt=1900, lt=2099)
+    ano: int = Field(gt=1900, lt=2099)
 
 
     class Config:
@@ -42,7 +42,7 @@ class FilmeRequest(BaseModel):
                 'descricao': 'Descrição do filme',
                 'genero': 'um gênero',
                 'avaliacao': 0,
-                'data_lancamento': 1900
+                'ano': 1900
             }
         }
 
@@ -87,7 +87,7 @@ async def atualizar_filme(filme_id, filme: FilmeRequest):
             filme_atual.descricao = filme.descricao
             filme_atual.genero = filme.genero
             filme_atual.avaliacao = filme.avaliacao
-            filme_atual.data_lancamento = filme.data_lancamento
+            filme_atual.ano = filme.ano
             atualizou = True
             break
     if not atualizou:
