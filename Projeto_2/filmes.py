@@ -74,8 +74,8 @@ async def mostrar_filme_por_id(filme_id: int):
 @app.post("/filmes/novo_filme/", status_code=status.HTTP_201_CREATED)
 async def novo_filme(filme_request: FilmeRequest):
     "Cadastra um novo filme."
-    novo_filme = Filme(**filme_request.model_dump())
-    FILMES.append(procura_filme_por_id(novo_filme))
+    novo = Filme(**filme_request.model_dump())
+    FILMES.append(procura_filme_por_id(novo))
 
 
 @app.put("/filmes/atualizar/{filme_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -97,10 +97,12 @@ async def atualizar_filme(filme_id, filme: FilmeRequest):
 @app.delete("/filmes/delete/{filme_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deletar_filme(filme_id: int):
     "Deleta filme pelo id."
-    for i, _ in enumerate(FILMES):
-        if FILMES[i].id == filme_id:
-            FILMES.pop(i)
+    deletou = False
+    for filme in FILMES:
+        if filme.id == filme_id:
+            FILMES.remove(filme)
             deletou = True
+            break
     if not deletou:
         raise http_exception()
 
